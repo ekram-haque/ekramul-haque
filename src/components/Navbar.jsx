@@ -5,7 +5,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState("#about");
 
   const links = [
     { name: "About", href: "#about" },
@@ -14,34 +14,32 @@ export default function Navbar() {
     { name: "Contact", href: "#contact" },
   ];
 
-  // Scroll to add navbar background
+  // Scroll background effect
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Track active section
+  // IntersectionObserver for active section highlight
   useEffect(() => {
     const sections = links.map((l) => document.querySelector(l.href));
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
             setActive(`#${entry.target.id}`);
           }
         });
       },
-      { threshold: 0.6 }
+      { threshold: 0.5 }
     );
 
     sections.forEach((sec) => sec && observer.observe(sec));
     return () => sections.forEach((sec) => sec && observer.unobserve(sec));
   }, []);
 
-  // Smooth scroll handler
+  // Smooth scroll on click
   const handleScrollClick = (href) => {
     setOpen(false);
     const el = document.querySelector(href);
@@ -59,10 +57,11 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* LOGO */}
-        <h1 className="text-xl font-bold tracking-wide">
-          <span className="text-blue-500">E</span>kram
+        <h1 className="text-lg md:text-xl font-bold tracking-wide">
+          <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+            {"<EkramulHaque/>"}
+          </span>
         </h1>
-
         {/* DESKTOP MENU */}
         <div className="hidden md:flex space-x-8">
           {links.map((link) => (
