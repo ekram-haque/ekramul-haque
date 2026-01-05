@@ -1,7 +1,9 @@
 export const projects = [
+  // ================= WEB PROJECTS =================
   {
     id: 1,
     name: "PawMart",
+    category: "web",
     images: [
       "/project-1.png",
       "/project-1dashboard.png",
@@ -18,6 +20,7 @@ export const projects = [
   {
     id: 2,
     name: "ScholarStream",
+    category: "web",
     images: [
       "/project2-home.png",
       "/project2-profile.png",
@@ -35,6 +38,7 @@ export const projects = [
   {
     id: 3,
     name: "Game Hub library",
+    category: "web",
     images: [
       "/gamehub-home.png",
       "/gamehub-games.png",
@@ -48,5 +52,45 @@ export const projects = [
     github: "https://github.com/ekram-haque/gamehub-repo.git",
     challenges: "Authentication, role management, and secure APIs.",
     future: "Admin dashboard, payment gateway, order tracking.",
+  },
+
+  // ================= ANDROID PROJECTS =================
+  {
+    id: 4,
+    category: "android",
+    name: "Pet Care App",
+    images: ["/android-1.png"],
+    tech: ["Java", "XML", "Firebase"],
+    description: "Android app for pet care and appointment tracking.",
+    github: "#",
+  },
+  {
+    id: 5,
+    category: "android",
+    name: "Student Manager",
+    images: ["/android-2.png"],
+    tech: ["Java", "SQLite", "XML"],
+    description: "Student record management Android application.",
+    github: "#",
+  },
+
+  // ================= VIBE PROJECTS =================
+  {
+    id: 6,
+    category: "vibe-web",
+    name: "Glass UI Landing",
+    images: ["/vibe-web.png"],
+    tech: ["HTML", "Tailwind", "GSAP"],
+    description: "Experimental glassmorphism landing page.",
+    live: "#",
+  },
+  {
+    id: 7,
+    category: "vibe-android",
+    name: "Music Player UI",
+    images: ["/vibe-android.png"],
+    tech: ["Java", "XML"],
+    description: "Modern Android music player UI concept.",
+    github: "#",
   },
 ];

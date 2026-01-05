@@ -7,43 +7,49 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#about");
 
-  const links = [
+
+  // Background blur on scroll
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+      const links = [
+   
     { name: "About", href: "#about" },
     { name: "Skills", href: "#skills" },
     { name: "Projects", href: "#projects" },
+    { name: "Social", href: "#social" },
     { name: "Contact", href: "#contact" },
   ];
 
-  // Scroll background effect
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
-  // IntersectionObserver for active section highlight
+  // Active section observer
   useEffect(() => {
+  
     const sections = links.map((l) => document.querySelector(l.href));
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
             setActive(`#${entry.target.id}`);
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.6 }
     );
 
     sections.forEach((sec) => sec && observer.observe(sec));
     return () => sections.forEach((sec) => sec && observer.unobserve(sec));
-  }, []);
+  }, [links]);
 
-  // Smooth scroll on click
   const handleScrollClick = (href) => {
     setOpen(false);
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.querySelector(href)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   return (
@@ -52,34 +58,52 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-black/80 backdrop-blur-md shadow-lg" : "bg-transparent"
+        scrolled
+          ? "bg-black/80 backdrop-blur-md shadow-lg"
+          : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center ">
         {/* LOGO */}
-        <h1 className="text-lg md:text-xl font-bold tracking-wide">
-          <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+        <button
+          onClick={() => handleScrollClick("#hero")}
+          className="text-lg md:text-xl font-bold tracking-wide"
+        >
+          <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent cursor-pointer">
             {"<EkramulHaque/>"}
           </span>
-        </h1>
+        </button>
+
         {/* DESKTOP MENU */}
         <div className="hidden md:flex space-x-8">
           {links.map((link) => (
             <button
               key={link.name}
               onClick={() => handleScrollClick(link.href)}
-              className={`relative font-medium transition-all duration-300 hover:text-blue-400 ${
-                active === link.href ? "text-blue-500" : "text-white"
+              className={`group relative font-medium transition cursor-pointer ${
+                active === link.href
+                  ? "text-blue-400"
+                  : "text-white hover:text-blue-400"
               }`}
             >
               {link.name}
-              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+              <span
+                className={`absolute left-0 -bottom-1 h-[2px] bg-blue-500 transition-all duration-300
+                ${
+                  active === link.href
+                    ? "w-full"
+                    : "w-0 group-hover:w-full"
+                }`}
+              />
             </button>
           ))}
         </div>
 
-        {/* MOBILE MENU ICON */}
-        <button className="md:hidden text-2xl" onClick={() => setOpen(!open)}>
+        {/* MOBILE ICON */}
+        <button
+          className="md:hidden text-2xl"
+          onClick={() => setOpen(!open)}
+        >
           {open ? <FiX /> : <FiMenu />}
         </button>
       </div>
@@ -97,8 +121,10 @@ export default function Navbar() {
               <button
                 key={link.name}
                 onClick={() => handleScrollClick(link.href)}
-                className={`text-lg transition hover:text-blue-400 ${
-                  active === link.href ? "text-blue-500" : "text-white"
+                className={`text-lg transition ${
+                  active === link.href
+                    ? "text-blue-400"
+                    : "text-white hover:text-blue-400"
                 }`}
               >
                 {link.name}
