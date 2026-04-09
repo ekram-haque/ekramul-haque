@@ -6,3 +6,13 @@
 html {
   scroll-behavior: auto;
 }
+
+/* Hide scrollbar globally */
+body {
+  overflow-y: scroll;      /* keeps scrolling */
+  scrollbar-width: none;    /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;            /* Chrome, Safari, Edge */
+}
